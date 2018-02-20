@@ -1,7 +1,7 @@
 import glob
 import unicodedata
 import string
-
+import numpy as np
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -165,43 +165,11 @@ def compute_validation_loss():
         for line in category_lines_val[category]:
             validation_line_tensor = Variable(line_to_tensor(line))
             out = evaluate(validation_line_tensor)
-            validation_loss += criterion(out, validation_category_tensor)
+            validation_loss += criterion(out, validation_category_tensor).data[0]
             counter += 1
     validation_loss = validation_loss / counter
     return validation_loss
 
-
-def compute_validation_accuracy():
-    confusion = torch.zeros(n_categories, n_categories)
-    n_confusion = 10000
-    # Go through a bunch of examples and record which are correctly guessed
-    for category in range(n_categories):
-        validation_category_tensor = Variable(torch.LongTensor([all_categories.index(category)]))
-        for line in category_lines_val[category]:
-            validation_line_tensor = Variable(line_to_tensor(line))
-            output = evaluate(validation_line_tensor)
-            guess, guess_i = category_from_output(output)
-            category_i = all_categories.index(category)
-            confusion[category_i][guess_i] += 1
-
-    # Normalize by dividing every row by its sum
-    for i in range(n_categories):
-        confusion[i] = confusion[i] / confusion[i].sum()
-
-    # Set up plot
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    cax = ax.matshow(confusion.numpy())
-    fig.colorbar(cax)
-
-    # Set up axes
-    ax.set_xticklabels([''] + all_categories, rotation=90)
-    ax.set_yticklabels([''] + all_categories)
-
-    # Force label at every tick
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
-    plt.savefig('output/validation_confusion.png')
 
 
 # Keep track of correct guesses in a confusion matrix
@@ -275,69 +243,103 @@ output, next_hidden = rnn.forward(input[0], hidden)
 # for i in range(10):
 #     category, line, category_tensor, line_tensor = random_training_pair(all_categories)
 #     print('category =', category, '/ line =', line)
+lrs = np.arange(0.0001, 0.002, .0002)
 
-criterion = nn.NLLLoss()
-learning_rate = 0.001
-optimizer = torch.optim.SGD(rnn.parameters(), lr=learning_rate)
+for learning_rate in lrs:
+    criterion = nn.NLLLoss()
+    #learning_rate = 0.001
+    optimizer = torch.optim.SGD(rnn.parameters(), lr=learning_rate)
 
-n_epochs = 100000
-print_every = 5000
-plot_every = 1000
+    n_epochs = 100000
+    print_every = 5000
+    plot_every = 1000
 
-# Keep track of losses for plotting
-current_train_loss = 0
-train_losses = []
-validation_losses = []
-start = time.time()
-for epoch in range(1, n_epochs + 1):
+    # Keep track of losses for plotting
+    current_train_loss = 0
+    train_losses = []
+    validation_losses = []
+    start = time.time()
+    for epoch in range(1, n_epochs + 1):
 
-    # Get a random training input and target
-    category, line, category_tensor, line_tensor = random_training_pair(all_categories)
-    output, loss = train(category_tensor, line_tensor)
-    current_train_loss += loss
-
-    # Print epoch number, loss, name and guess
-    if epoch % print_every == 0:
-        guess, guess_i = category_from_output(output)
-        correct = '✓' if guess == category else '✗ (%s)' % category
-
-        print('%d %d%% (%s) %.4f %s / %s %s' % (
-            epoch, epoch / n_epochs * 100, time_since(start), loss, line, guess,
-            correct))
-
-    # Add current loss avg to list of losses
-    if epoch % plot_every == 0:
-        train_losses.append(current_train_loss / plot_every)
-        validation_losses.append(compute_validation_loss())
-        current_train_loss = 0
-
-plt.figure()
-plt.plot(train_losses)
-plt.plot(validation_losses)
-plt.savefig("output/losses.png")
-
-
-"""for category in all_categories:
-    for line in category_lines_train[category]:
-        category_tensor = Variable(torch.LongTensor([all_categories.index(category)]))
-        line_tensor = Variable(line_to_tensor(line))
+        # Get a random training input and target
+        category, line, category_tensor, line_tensor = random_training_pair(all_categories)
         output, loss = train(category_tensor, line_tensor)
-        current_loss += loss
-        count = count + 1
-        if count % print_every == 0:
+        current_train_loss += loss
+
+        # Print epoch number, loss, name and guess
+        if epoch % print_every == 0:
             guess, guess_i = category_from_output(output)
             correct = '✓' if guess == category else '✗ (%s)' % category
-            print(time_since(start), loss, line, guess, correct, category)
-        if count % plot_every == 0:
-            # print(current_loss)
-            all_losses.append(current_loss / plot_every)
-            current_loss = 0
+
+            print('%d %d%% (%s) %.4f %s / %s %s' % (
+                epoch, epoch / n_epochs * 100, time_since(start), loss, line, guess,
+                correct))
+
+        # Add current loss avg to list of losses
+        if epoch % plot_every == 0:
+            train_losses.append(current_train_loss / plot_every)
+            validation_losses.append(compute_validation_loss())
+            current_train_loss = 0
+
+    plt.figure()
+    print("training losses = " + str(train_losses))
+    print("val losses = " + str(validation_losses))
+
+    plt.plot(train_losses)
+    plt.plot(validation_losses)
+    plt.savefig("output/losses" + str(learning_rate) + ".png")
+    #compute_validation_accuracy()
+
+
+    confusion = torch.zeros(n_categories, n_categories)
+    # n_confusion = 10000
+    #  Go through a bunch of examples and record which are correctly guessed
+    for category in all_categories:
+        validation_category_tensor = Variable(torch.LongTensor([all_categories.index(category)]))
+        for line in category_lines_val[category]:
+            validation_line_tensor = Variable(line_to_tensor(line))
+            output = evaluate(validation_line_tensor)
+            guess, guess_i = category_from_output(output)
+            category_i = all_categories.index(category)
+            confusion[category_i][guess_i] += 1
+
+    # Normalize by dividing every row by its sum
+    for i in range(n_categories):
+        confusion[i] = confusion[i] / confusion[i].sum()
+
+    # Set up plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    cax = ax.matshow(confusion.numpy())
+    fig.colorbar(cax)
+
+    # Set up axes
+    ax.set_xticklabels([''] + all_categories, rotation=90)
+    ax.set_yticklabels([''] + all_categories)
+
+    # Force label at every tick
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
+    plt.savefig('output/validation_confusion' + str(learning_rate) + '.png')
+
+"""for category in all_categories:
+for line in category_lines_train[category]:
+    category_tensor = Variable(torch.LongTensor([all_categories.index(category)]))
+    line_tensor = Variable(line_to_tensor(line))
+    output, loss = train(category_tensor, line_tensor)
+    current_loss += loss
+    count = count + 1
+    if count % print_every == 0:
+        guess, guess_i = category_from_output(output)
+        correct = '✓' if guess == category else '✗ (%s)' % category
+        print(time_since(start), loss, line, guess, correct, category)
+    if count % plot_every == 0:
+        # print(current_loss)
+        all_losses.append(current_loss / plot_every)
+        current_loss = 0
 """
 
 
-
-
-compute_validation_accuracy()
 
 
 # predict('villedieu')  # fr
