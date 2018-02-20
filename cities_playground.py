@@ -28,7 +28,7 @@ def unicode_to_ascii(s):
 
 # Read a file and split into lines
 def read_lines(filename):
-    lines = open(filename).read().strip().split('\n')
+    lines = open(filename, errors='ignore').read().strip().split('\n')
     return [unicode_to_ascii(line) for line in lines]
 
 
@@ -69,7 +69,7 @@ def train(category_tensor, line_tensor):
 
     # If you set this too high, it might explode.
     # If too low, it might not learn
-    learning_rate = 0.005
+    learning_rate = 0.001
 
     optimizer = torch.optim.SGD(rnn.parameters(), lr=learning_rate)
 
@@ -148,7 +148,7 @@ class RNN(nn.Module):
 
 if __name__ == "__main__":
 
-    all_filenames = glob.glob('data/names/*.txt')
+    all_filenames = glob.glob('data/cities_train/*.txt')
     print(all_filenames)
 
     # print(unicode_to_ascii('Ślusàrski'))
@@ -165,15 +165,15 @@ if __name__ == "__main__":
 
     n_categories = len(all_categories)
     print('n_categories =', n_categories)
-    print(category_lines['Italian'][:100])
+    print(category_lines['de'][:100])
 
-    print(letter_to_tensor('A'))
-    print(line_to_tensor('Albert').size())
+    print(letter_to_tensor('t'))
+    print(line_to_tensor('torce').size())
 
     n_hidden = 128
     rnn = RNN(n_letters, n_hidden, n_categories)
 
-    input = Variable(line_to_tensor('Jones'))
+    input = Variable(line_to_tensor('torce'))
     hidden = rnn.init_hidden()
 
     output, next_hidden = rnn.forward(input[0], hidden)
@@ -250,11 +250,6 @@ if __name__ == "__main__":
 
     plt.show()
 
-    predict('Dovesky')
-    predict('Jackson')
-    predict('Satoshi')
-
-
-
-
-
+    predict('villedieu')    # fr
+    predict('odemis')       # de
+    predict('madilo')       # za
