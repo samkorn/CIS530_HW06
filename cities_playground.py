@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
-
+import pandas as pd
 import random
 import time
 import math
@@ -228,99 +228,147 @@ n_categories = len(all_categories)
 # print(line_to_tensor('torce').size())
 
 # MODIFY THIS VV ???
-n_hidden = 128
-rnn = RNN(n_letters, n_hidden, n_categories)
 
-input = Variable(line_to_tensor('torce'))
-hidden = rnn.init_hidden()
-
-output, next_hidden = rnn.forward(input[0], hidden)
-
-# print('output.size =', output.size())
-# print(output)
-# print(category_from_output(output))
-
-# for i in range(10):
-#     category, line, category_tensor, line_tensor = random_training_pair(all_categories)
-#     print('category =', category, '/ line =', line)
-lrs = np.arange(0.0001, 0.002, .0002)
-
-for learning_rate in lrs:
-    criterion = nn.NLLLoss()
-    #learning_rate = 0.001
-    optimizer = torch.optim.SGD(rnn.parameters(), lr=learning_rate)
-
-    n_epochs = 100000
-    print_every = 5000
-    plot_every = 1000
-
-    # Keep track of losses for plotting
-    current_train_loss = 0
-    train_losses = []
-    validation_losses = []
-    start = time.time()
-    for epoch in range(1, n_epochs + 1):
-
-        # Get a random training input and target
-        category, line, category_tensor, line_tensor = random_training_pair(all_categories)
-        output, loss = train(category_tensor, line_tensor)
-        current_train_loss += loss
-
-        # Print epoch number, loss, name and guess
-        if epoch % print_every == 0:
-            guess, guess_i = category_from_output(output)
-            correct = '✓' if guess == category else '✗ (%s)' % category
-
-            print('%d %d%% (%s) %.4f %s / %s %s' % (
-                epoch, epoch / n_epochs * 100, time_since(start), loss, line, guess,
-                correct))
-
-        # Add current loss avg to list of losses
-        if epoch % plot_every == 0:
-            train_losses.append(current_train_loss / plot_every)
-            validation_losses.append(compute_validation_loss())
-            current_train_loss = 0
-
-    plt.figure()
-    print("training losses = " + str(train_losses))
-    print("val losses = " + str(validation_losses))
-
-    plt.plot(train_losses)
-    plt.plot(validation_losses)
-    plt.savefig("output/losses" + str(learning_rate) + ".png")
-    #compute_validation_accuracy()
+#n_hidden = 128
 
 
-    confusion = torch.zeros(n_categories, n_categories)
-    # n_confusion = 10000
-    #  Go through a bunch of examples and record which are correctly guessed
-    for category in all_categories:
-        validation_category_tensor = Variable(torch.LongTensor([all_categories.index(category)]))
-        for line in category_lines_val[category]:
-            validation_line_tensor = Variable(line_to_tensor(line))
-            output = evaluate(validation_line_tensor)
-            guess, guess_i = category_from_output(output)
-            category_i = all_categories.index(category)
-            confusion[category_i][guess_i] += 1
+nhs = np.arange(100, 600, 100)
+lrs = np.arange(0.0001, 0.0022, .0004)
+countries = ['af', 'cn', 'de', 'fi', 'fr', 'in', 'ir', 'pk', 'za']
+city_counts = dict()
 
-    # Normalize by dividing every row by its sum
-    for i in range(n_categories):
-        confusion[i] = confusion[i] / confusion[i].sum()
+total_cities = 0
+for country in countries:
+    with open("data/cities_val/" + country + ".txt", "r") as vals:
+        num_cities = len(vals.readlines())
+        city_counts.update({country: num_cities})
+        total_cities += num_cities
 
-    # Set up plot
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    cax = ax.matshow(confusion.numpy())
-    fig.colorbar(cax)
 
-    # Set up axes
-    ax.set_xticklabels([''] + all_categories, rotation=90)
-    ax.set_yticklabels([''] + all_categories)
 
-    # Force label at every tick
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
-    plt.savefig('output/validation_confusion' + str(learning_rate) + '.png')
+res1 = pd.DataFrame(columns=('n_hidden', 'learning_rate',
+    'correct', 'af_correct', 'cn_correct', 'de_correct', 'fi_correct', 'fr_correct',
+    'in_correct', 'ir_correct', 'pk_correct', 'za_correct'))
+
+for n_hidden in nhs:
+
+
+    #input = Variable(line_to_tensor('torce'))
+    #hidden = rnn.init_hidden()
+
+    #output, next_hidden = rnn.forward(input[0], hidden)
+
+    # print('output.size =', output.size())
+    # print(output)
+    # print(category_from_output(output))
+
+    # for i in range(10):
+    #     category, line, category_tensor, line_tensor = random_training_pair(all_categories)
+    #     print('category =', category, '/ line =', line)
+
+    for learning_rate in lrs:
+        rnn = RNN(n_letters, int(n_hidden), n_categories)
+
+        print("Number of Hidden States = " + str(n_hidden) + "\n Learning Rate = " + str(learning_rate))
+
+        total_correct = 0
+        correct_cities = {country: 0 for country in countries}
+        criterion = nn.NLLLoss()
+        #learning_rate = 0.001
+        optimizer = torch.optim.SGD(rnn.parameters(), lr=learning_rate)
+
+        n_epochs = 100000
+        print_every = 5000
+        plot_every = 1000
+
+        # Keep track of losses for plotting
+        current_train_loss = 0
+        train_losses = []
+        validation_losses = []
+        start = time.time()
+        for epoch in range(1, n_epochs + 1):
+
+            # Get a random training input and target
+            category, line, category_tensor, line_tensor = random_training_pair(all_categories)
+            output, loss = train(category_tensor, line_tensor)
+            current_train_loss += loss
+
+            # Print epoch number, loss, name and guess
+            if epoch % print_every == 0:
+                guess, guess_i = category_from_output(output)
+                correct = '✓' if guess == category else '✗ (%s)' % category
+
+                print('%d %d%% (%s) %.4f %s / %s %s' % (
+                    epoch, epoch / n_epochs * 100, time_since(start), loss, line, guess,
+                    correct))
+
+            # Add current loss avg to list of losses
+            if epoch % plot_every == 0:
+                train_losses.append(current_train_loss / plot_every)
+                validation_losses.append(compute_validation_loss())
+                current_train_loss = 0
+
+        plt.figure()
+        #print("training losses = " + str(train_losses))
+        #print("val losses = " + str(validation_losses))
+
+        plt.plot(train_losses)
+        plt.plot(validation_losses)
+        'output/confus_L' + str(learning_rate) + '_NH' + str(nhs) + '.png'
+        plt.savefig("output/loss_L" + str(learning_rate) + "_NH" + str(n_hidden) +".png")
+        #compute_validation_accuracy()
+
+
+        confusion = torch.zeros(n_categories, n_categories)
+        # n_confusion = 10000
+        #  Go through a bunch of examples and record which are correctly guessed
+
+        for category in all_categories:
+            validation_category_tensor = Variable(torch.LongTensor([all_categories.index(category)]))
+            for line in category_lines_val[category]:
+                validation_line_tensor = Variable(line_to_tensor(line))
+                output = evaluate(validation_line_tensor)
+                guess, guess_i = category_from_output(output)
+                category_i = all_categories.index(category)
+                confusion[category_i][guess_i] += 1
+                if guess == category:
+                    correct_cities.update({country: correct_cities[country] + 1})
+                    total_correct += 1
+        print("Number of Hidden States = " + str(n_hidden) + "\n Learning Rate = " + str(learning_rate) + "\nAccuracy =" + str(total_correct/float(total_cities)))
+        res1.loc[len(res1)] = [learning_rate,
+                               n_hidden,
+                                total_correct / float(total_cities),
+                               correct_cities['af'] / float(city_counts['af']),
+                               correct_cities['cn'] / float(city_counts['cn']),
+                               correct_cities['de'] / float(city_counts['de']),
+                               correct_cities['fi'] / float(city_counts['fi']),
+                               correct_cities['fr'] / float(city_counts['fr']),
+                               correct_cities['in'] / float(city_counts['in']),
+                               correct_cities['ir'] / float(city_counts['ir']),
+                               correct_cities['pk'] / float(city_counts['pk']),
+                               correct_cities['za'] / float(city_counts['za'])]
+        # Normalize by dividing every row by its sum
+        for i in range(n_categories):
+            confusion[i] = confusion[i] / confusion[i].sum()
+
+        # Set up plot
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        cax = ax.matshow(confusion.numpy())
+        fig.colorbar(cax)
+
+        # Set up axes
+        ax.set_xticklabels([''] + all_categories, rotation=90)
+        ax.set_yticklabels([''] + all_categories)
+
+        # Force label at every tick
+        ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
+        ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
+        plt.savefig('output/confus_L' + str(learning_rate) + '_NH' + str(n_hidden)+'.png')
+
+writer = pd.ExcelWriter('learningrate_hiddenstates.xlsx')
+res1.to_excel(writer, 'lr_hs')
+writer.close()
 
 """for category in all_categories:
 for line in category_lines_train[category]:
