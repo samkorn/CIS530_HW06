@@ -1,9 +1,9 @@
 # https://github.com/spro/practical-pytorch
 
 import torch
-
 from helpers import *
 from model import *
+
 
 def generate(decoder, prime_str='A', predict_len=100, temperature=0.8):
     hidden = decoder.init_hidden()
@@ -40,7 +40,6 @@ if __name__ == '__main__':
     argparser.add_argument('-l', '--predict_len', type=int, default=100)
     argparser.add_argument('-t', '--temperature', type=float, default=0.8)
     args = argparser.parse_args()
-
     decoder = torch.load(args.filename)
     del args.filename
     print(generate(decoder, **vars(args)))

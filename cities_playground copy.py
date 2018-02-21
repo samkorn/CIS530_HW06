@@ -13,6 +13,8 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
+
+output_labels = []
 all_letters = string.ascii_letters + " .,;'"
 n_letters = len(all_letters)
 
@@ -302,7 +304,7 @@ for learning_rate in lrs:
             guess, guess_i = category_from_output(output)
             category_i = all_categories.index(category)
             confusion[category_i][guess_i] += 1
-
+            output_labels.append(guess)
     # Normalize by dividing every row by its sum
     for i in range(n_categories):
         confusion[i] = confusion[i] / confusion[i].sum()
@@ -321,6 +323,12 @@ for learning_rate in lrs:
     ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
     ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
     plt.savefig('output/validation_confusion' + str(learning_rate) + '.png')
+
+with open('labels.txt') as labelstxt:
+    for ol in output_labels:
+        labelstxt.write(ol)
+        labelstxt.write('\n')
+    labelstxt.close()
 
 """for category in all_categories:
 for line in category_lines_train[category]:
