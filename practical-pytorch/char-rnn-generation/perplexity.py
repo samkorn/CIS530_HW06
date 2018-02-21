@@ -30,22 +30,23 @@ def perplexity(decoder, test_filename):
         output = softmax(evaluate(curr_char_tensor))
 
         next_char = test[i + 1]
-        index_next_char = all_characters.index(string[next_char])
+        index_next_char = all_characters.index(next_char)
         prob = output[index_next_char]
 
-        """next_letter_prob = model["<UNK>"]
-    curr_char = test[0]
-    for i in range(sz):
-        output = evaluate()
-        next_letter = test[i + order]
-        next_letter_prob = model["<UNK>"]
-        if phrase in model:
-            phrase_probs = model[phrase]
-            for j in range(len(phrase_probs)):
-                tup = phrase_probs[j]
-                if tup[0] == next_letter:
-                    next_letter_prob = tup[1]
-                    break"""
+    # next_letter_prob = model["<UNK>"]
+    # curr_char = test[0]
+    # for i in range(sz):
+    #     output = evaluate()
+    #     next_letter = test[i + order]
+    #     next_letter_prob = model["<UNK>"]
+    #     if phrase in model:
+    #         phrase_probs = model[phrase]
+    #         for j in range(len(phrase_probs)):
+    #             tup = phrase_probs[j]
+    #             if tup[0] == next_letter:
+    #                 next_letter_prob = tup[1]
+    #                 break
+
         log_sum += np.log(prob)
         curr_char = test[i + 1]
     return log_sum * (-1 / float(sz))
@@ -55,6 +56,6 @@ if __name__ == '__main__':
     argparser.add_argument('model_filename', type=str)
     argparser.add_argument('test_filename', type=str)
     args = argparser.parse_args()
-    decoder = torch.load(args.filename)
-    print(perplexity(decoder, **vars(args)))
+    decoder = torch.load(args.model_filename)
+    print(perplexity(decoder, args.test_filename))
 

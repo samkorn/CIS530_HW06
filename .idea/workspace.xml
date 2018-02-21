@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6d12326b-4c08-4c07-b4fd-bc683e55da66" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/quotes.txt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/cleanup_quotes.py" afterPath="$PROJECT_DIR$/cleanup_quotes.py" />
+      <change beforePath="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/fortunes.pt" afterPath="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/fortunes.pt" />
+      <change beforePath="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/perplexity.py" afterPath="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/perplexity.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,21 +16,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="cities_playground.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cities_playground.py">
+      <file leaf-file-name="helpers.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/helpers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#45#61#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cleanup_quotes.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cleanup_quotes.py">
+      <file leaf-file-name="generate.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/generate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="425">
+              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -37,8 +41,8 @@
       <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="16" lean-forward="false" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+            <state relative-caret-position="-556">
+              <caret line="17" column="59" lean-forward="false" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
               <folding>
                 <element signature="e#45#57#0" expanded="true" />
               </folding>
@@ -46,13 +50,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-classification/train.py">
+      <file leaf-file-name="cleanup_quotes.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cleanup_quotes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="326">
+              <caret line="44" column="39" lean-forward="false" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="39" />
               <folding>
-                <element signature="e#0#12#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -82,12 +86,14 @@
         <option value="$PROJECT_DIR$/practical-pytorch/char-rnn-classification/model.py" />
         <option value="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/generate.py" />
         <option value="$PROJECT_DIR$/cities_playground.py" />
+        <option value="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/perplexity.py" />
+        <option value="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/train.py" />
         <option value="$PROJECT_DIR$/cleanup_quotes.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="5" />
+    <option name="x" value="24" />
     <option name="y" value="23" />
     <option name="width" value="1400" />
     <option name="height" value="832" />
@@ -119,18 +125,7 @@
             <path>
               <item name="CIS530_HW06" type="b2602c69:ProjectViewProjectNode" />
               <item name="CIS530_HW06" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CIS530_HW06" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CIS530_HW06" type="462c0819:PsiDirectoryNode" />
               <item name="practical-pytorch" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CIS530_HW06" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CIS530_HW06" type="462c0819:PsiDirectoryNode" />
-              <item name="practical-pytorch" type="462c0819:PsiDirectoryNode" />
-              <item name="char-rnn-classification" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CIS530_HW06" type="b2602c69:ProjectViewProjectNode" />
@@ -147,6 +142,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -215,16 +211,36 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <list size="3">
+    <configuration name="perplexity" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/practical-pytorch/char-rnn-generation" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CIS530_HW06" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practical-pytorch/char-rnn-generation/perplexity.py" />
+      <option name="PARAMETERS" value="fortunes.pt quotes.txt" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.baby_names" />
       <item index="1" class="java.lang.String" itemvalue="Python.cities_playground" />
       <item index="2" class="java.lang.String" itemvalue="Python.cleanup_quotes" />
+      <item index="3" class="java.lang.String" itemvalue="Python.perplexity" />
     </list>
     <recent_temporary>
-      <list size="3">
+      <list size="4">
         <item index="0" class="java.lang.String" itemvalue="Python.cleanup_quotes" />
-        <item index="1" class="java.lang.String" itemvalue="Python.cities_playground" />
-        <item index="2" class="java.lang.String" itemvalue="Python.baby_names" />
+        <item index="1" class="java.lang.String" itemvalue="Python.perplexity" />
+        <item index="2" class="java.lang.String" itemvalue="Python.cities_playground" />
+        <item index="3" class="java.lang.String" itemvalue="Python.baby_names" />
       </list>
     </recent_temporary>
   </component>
@@ -277,11 +293,18 @@
       <option name="project" value="LOCAL" />
       <updated>1519184883084</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added fortunes and edited generate.py to stop after return character.">
+      <created>1519186454278</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1519186454278</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="5" y="23" width="1400" height="832" extended-state="0" />
+    <frame x="24" y="23" width="1400" height="832" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -364,14 +387,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cities_playground.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cities_playground copy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
@@ -389,12 +404,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/generate.py">
+    <entry file="file://$PROJECT_DIR$/cities_playground.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state relative-caret-position="-4128">
+          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
           <folding>
-            <element signature="e#45#57#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -409,10 +424,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/perplexity.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="11" column="17" lean-forward="true" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/helpers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#45#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/generate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/practical-pytorch/char-rnn-generation/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="16" lean-forward="false" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+        <state relative-caret-position="-556">
+          <caret line="17" column="59" lean-forward="false" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
           <folding>
             <element signature="e#45#57#0" expanded="true" />
           </folding>
@@ -421,9 +464,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cleanup_quotes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="326">
+          <caret line="44" column="39" lean-forward="false" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
